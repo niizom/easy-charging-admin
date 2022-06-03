@@ -4,8 +4,9 @@ import { BrowserRouter } from 'react-router-dom';
 
 import App from './App';
 import Preloader from './components/Preloader';
-import 'antd/dist/antd.css';
 import ErrorBoundary from './containers/ErrorBoundary/ErrorBoundary';
+import 'antd/dist/antd.css';
+import './styles/main.scss'
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
