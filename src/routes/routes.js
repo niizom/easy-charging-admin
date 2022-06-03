@@ -2,8 +2,10 @@ import React from 'react';
 import { Redirect, Route, Switch, withRouter } from 'react-router-dom';
 
 const MainLayout = React.lazy(() => import('../layouts/MainLayout'));
+const EmptyLayout = React.lazy(() => import('../layouts/EmptyLayout'));
 
 const AdminsList = React.lazy(() => import('../pages/AdminsList'));
+const NotFound = React.lazy(() => import('../pages/NotFound'));
 
 const AppRoute = ({ component: Component, layout: Layout, ...rest }) => (
     <Route
@@ -22,13 +24,13 @@ const privateRoutes = [
         exact: true,
         layout: MainLayout,
         component: AdminsList
+    },
+    {
+        path: '/404',
+        exact: true,
+        layout: EmptyLayout,
+        component: NotFound
     }
-    // {
-    //     path: '/404',
-    //     exact: true,
-    //     layout: MainLayout,
-    //     component: NotFount
-    // }
 ];
 const publicRoutes = [
     {
@@ -36,6 +38,12 @@ const publicRoutes = [
         exact: true,
         layout: MainLayout,
         component: AdminsList
+    },
+    {
+        path: '/404',
+        exact: true,
+        layout: EmptyLayout,
+        component: NotFound
     }
 ];
 
