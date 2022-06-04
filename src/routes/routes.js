@@ -5,6 +5,7 @@ const MainLayout = React.lazy(() => import('../layouts/MainLayout'));
 const EmptyLayout = React.lazy(() => import('../layouts/EmptyLayout'));
 
 const AdminsList = React.lazy(() => import('../pages/AdminsList'));
+const Login = React.lazy(() => import('../pages/Login'));
 const NotFound = React.lazy(() => import('../pages/NotFound'));
 
 const AppRoute = ({ component: Component, layout: Layout, ...rest }) => (
@@ -26,6 +27,12 @@ const privateRoutes = [
         component: AdminsList
     },
     {
+        path: '/login',
+        exact: true,
+        layout: EmptyLayout,
+        component: Login
+    },
+    {
         path: '/404',
         exact: true,
         layout: EmptyLayout,
@@ -36,8 +43,8 @@ const publicRoutes = [
     {
         path: '/',
         exact: true,
-        layout: MainLayout,
-        component: AdminsList
+        layout: EmptyLayout,
+        component: Login
     },
     {
         path: '/404',
@@ -48,13 +55,13 @@ const publicRoutes = [
 ];
 
 const Routes = () => {
-    const publicRouteList = publicRoutes.map((item, id) => {
+    const privateRoutesList = privateRoutes.map((item, id) => {
         return <AppRoute key={id} exact path={item.path} layout={item.layout} component={item.component} />;
     });
 
     return (
         <Switch>
-            {publicRouteList}
+            {privateRoutesList}
             <Redirect from="*" to="/404" />
         </Switch>
     );
