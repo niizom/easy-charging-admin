@@ -1,5 +1,6 @@
 import React from 'react';
 import { Redirect, Route, Switch, withRouter } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 const MainLayout = React.lazy(() => import('../layouts/MainLayout'));
 const EmptyLayout = React.lazy(() => import('../layouts/EmptyLayout'));
@@ -19,6 +20,7 @@ const AppRoute = ({ component: Component, layout: Layout, ...rest }) => (
     />
 );
 
+// for authenticated users
 const privateRoutes = [
     {
         path: '/',
@@ -37,32 +39,44 @@ const privateRoutes = [
         exact: true,
         layout: EmptyLayout,
         component: NotFound
+    },
+    {
+        path: '*',
+        exact: true,
+        layout: EmptyLayout,
+        component: () => <Redirect to="/404" />
     }
 ];
+// for not authenticated users
 const publicRoutes = [
     {
-        path: '/',
+        path: '/login',
         exact: true,
         layout: EmptyLayout,
         component: Login
     },
     {
-        path: '/404',
+        path: '*',
         exact: true,
         layout: EmptyLayout,
-        component: NotFound
+        component: () => <Redirect to="/login" />
     }
 ];
 
 const Routes = () => {
+    const token = useSelector(state => state?.auth?.token);
+
     const privateRoutesList = privateRoutes.map((item, id) => {
+        return <AppRoute key={id} exact path={item.path} layout={item.layout} component={item.component} />;
+    });
+
+    const publicRoutesList = publicRoutes.map((item, id) => {
         return <AppRoute key={id} exact path={item.path} layout={item.layout} component={item.component} />;
     });
 
     return (
         <Switch>
-            {privateRoutesList}
-            <Redirect from="*" to="/404" />
+            {token ? privateRoutesList : publicRoutesList}
         </Switch>
     );
 };

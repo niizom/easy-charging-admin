@@ -1,11 +1,36 @@
 import React from 'react';
+import { useMutation } from 'react-query';
+import { useHistory } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import { Form, Input, Button, Alert } from 'antd';
+
+import { setToken } from '../../redux/slicers/auth';
+import requests from '../../services/requests';
 import style from './Login.module.scss';
 
 function Login() {
-    const error = false;
-    const loading = false;
-    const handleSubmit = () => {};
+    const history = useHistory();
+    const dispatch = useDispatch();
+
+    const [error, setError] = React.useState(false);
+    const [loading, setLoading] = React.useState(false);
+
+    const { mutate } = useMutation(requests.auth.login, {
+        onSuccess: ({ data }) => {
+            setLoading(false);
+            dispatch(setToken(data));
+            history.push('/');
+        },
+        onError: () => {
+            setLoading(false);
+            setError(true);
+        }
+    });
+
+    const handleSubmit = value => {
+        setLoading(true);
+        mutate(value);
+    };
 
     return (
         <div className={style.container}>
@@ -19,23 +44,21 @@ function Login() {
                     remember: true
                 }}
             >
-                {error && <Alert style={{ marginBottom: 20 }} message="Password or email is incorrect" type="error" />}
+                {error && (
+                    <Alert style={{ marginBottom: 20 }} message="Password or username is incorrect" type="error" />
+                )}
                 <Form.Item
-                    label="Email"
-                    name="email"
+                    label="Username"
+                    name="username"
                     className="formInput"
                     rules={[
-                        {
-                            type: 'email',
-                            message: 'Invalid email'
-                        },
                         {
                             required: true,
                             message: 'Required field'
                         }
                     ]}
                 >
-                    <Input size="large" placeholder="teacher@exapmle.com" />
+                    <Input size="large" placeholder="" />
                 </Form.Item>
 
                 <Form.Item
