@@ -1,5 +1,18 @@
 .backgroundWhite {
-  // background-color: white;
+  background-color: white;
+  padding-left: 22px;
+  padding-right: 22px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  font-size: 22px;
+  font-weight: bold;
 }
 
 .divider {

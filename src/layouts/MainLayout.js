@@ -10,10 +10,8 @@ function MainLayout({ children }) {
             <Header />
             <Layout>
                 <Sidebar />
-                <Layout style={{ padding: 16 }}>
-                    <Layout.Content style={{ padding: 16, margin: 0, backgroundColor: 'white' }}>
-                        {children}
-                    </Layout.Content>
+                <Layout style={{ padding: 22 }}>
+                    {children}
                 </Layout>
             </Layout>
         </Layout>
