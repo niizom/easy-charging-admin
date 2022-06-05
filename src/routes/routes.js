@@ -8,6 +8,8 @@ const EmptyLayout = React.lazy(() => import('../layouts/EmptyLayout'));
 const AdminsList = React.lazy(() => import('../pages/AdminsList'));
 const Login = React.lazy(() => import('../pages/Login'));
 const NotFound = React.lazy(() => import('../pages/NotFound'));
+const CompaniesList = React.lazy(() => import('../pages/CompaniesList'));
+const Categories = React.lazy(() => import('../pages/Categories'));
 
 const AppRoute = ({ component: Component, layout: Layout, ...rest }) => (
     <Route
@@ -33,6 +35,18 @@ const privateRoutes = [
         exact: true,
         layout: EmptyLayout,
         component: Login
+    },
+    {
+        path: '/companies',
+        exact: true,
+        layout: MainLayout,
+        component: CompaniesList
+    },
+    {
+        path: '/categories',
+        exact: true,
+        layout: MainLayout,
+        component: Categories
     },
     {
         path: '/404',
@@ -74,11 +88,7 @@ const Routes = () => {
         return <AppRoute key={id} exact path={item.path} layout={item.layout} component={item.component} />;
     });
 
-    return (
-        <Switch>
-            {token ? privateRoutesList : publicRoutesList}
-        </Switch>
-    );
+    return <Switch>{token ? privateRoutesList : publicRoutesList}</Switch>;
 };
 
 export default withRouter(Routes);
